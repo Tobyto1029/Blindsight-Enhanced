@@ -5,7 +5,7 @@
     <defName>Psysight</defName>
     <hediffClass>Blindsight_Enhanced.Hediff_Psysight</hediffClass>
     <label>Psysight</label>
-    <description>Blinded by the ritual of blinding, this person is able to see using mental fortituide</description>
+    <description>The inablity to see from their eyes did not prevent this person from still seeing the world around them, tapping into a hidden sense known as Psysight.\n\nPsysight grants a base sight of 25% and scales up to 150% based on the current Psylink level</description>
     <defaultLabelColor>(0.6, 0.6, 1.0)</defaultLabelColor>
     <isBad>false</isBad>
     <initialSeverity>1</initialSeverity>
