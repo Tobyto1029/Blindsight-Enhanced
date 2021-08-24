@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace Blindsight_Enhanced
 {
+    #region Hediff Definiton
+
     [DefOf]
     public static class PsysightHediffDefOf
     {
@@ -20,14 +22,7 @@ namespace Blindsight_Enhanced
         }
     }
 
-    /* Maybe don't need this?
-    public class Psysight : HediffDef
-    {
-
-    }
-    */
-
-    public  class Hediff_Psysight : Hediff_Level
+    public class Hediff_Psysight : Hediff_Level
     {
         public static HediffDef Psysight;
         public override void PostAdd(DamageInfo? dinfo)
@@ -41,6 +36,7 @@ namespace Blindsight_Enhanced
             PsysightHandler.Updater(pawn);
         }
 
+        // Taking ExposeData() from Hediff instead of Hediff_Level
         public override void ExposeData()
         {
             if (Scribe.mode == LoadSaveMode.Saving && this.combatLogEntry != null)
@@ -61,74 +57,38 @@ namespace Blindsight_Enhanced
             Scribe_Values.Look(ref causesNoPain, "causesNoPain", defaultValue: false);
             Scribe_References.Look(ref combatLogEntry, "combatLogEntry");
             Scribe_Values.Look(ref combatLogText, "combatLogText");
-            BackCompatibility.PostExposeData(this);
             Scribe_Values.Look(ref level, "level", 0);
+            BackCompatibility.PostExposeData(this);
         }
     }
 
-    [StaticConstructorOnStartup]
-    public static class HarmonyPatches
-    {
-        static HarmonyPatches()
-        {
-            new Harmony("Blindsight_Enhanced").PatchAll();
-            Log.Message("Blindsight Enhanced is Loaded and Patched, Thank you for using my mod!");
-        }
+    #endregion
 
-        public static bool ShouldHavePsysightHediff(this Pawn pawn)
-        {
-            bool hasSight = true;
-            int missingSources = 0;
-            // Check if pawn has sight 
-            List<Hediff> hediffs = pawn.health.hediffSet.hediffs;
-            for (int i = 0; i < hediffs.Count; i++)
-            {
-                // Check if eyes are missing, then check if prothetic adds sight
-                if (((hediffs[i] as Hediff_MissingPart) != null && hediffs[i].Part.def.tags.Contains(BodyPartTagDefOf.SightSource)) || ((hediffs[i] as Hediff_AddedPart) != null && hediffs[i].Part.def.tags.Contains(BodyPartTagDefOf.SightSource) && hediffs[i].def.addedPartProps.partEfficiency == 0))
-                {
-                    missingSources += 1;
-                }
-            }
-            if (missingSources >= 2)
-            {
-                hasSight = false;
-            }
-
-            return !pawn.Dead && pawn.Ideo != null && pawn.Ideo.IdeoApprovesOfBlindness() && !hasSight;
-        }
-    }
-
-
+    #region Helper Functions
 
     public static class PsysightHandler
     {
+
         public static void Giver(Pawn pawn)
         {
-            if (pawn.ShouldHavePsysightHediff() && pawn.health.hediffSet.HasHediff(PsysightHediffDefOf.Psysight));
+            if (!pawn.health.hediffSet.HasHediff(PsysightHediffDefOf.Psysight));
             {
-                pawn.health.AddHediff(PsysightHediffDefOf.Psysight);
-
-                int psyLevel = pawn.GetPsylinkLevel();
-                Hediff_Psysight def = (Hediff_Psysight)pawn.health.hediffSet.GetFirstHediffOfDef(PsysightHediffDefOf.Psysight);
-                if (psyLevel >= 1)
-                {
-                    def.SetLevelTo(psyLevel);
-                } else
-                {
-                    def.SetLevelTo(1);
-                }
+                // Grant psysight on pawn Brain
+                Hediff_Psysight psysight = (HediffMaker.MakeHediff(PsysightHediffDefOf.Psysight, pawn, pawn.health.hediffSet.GetBrain()) as Hediff_Psysight);
+                pawn.health.AddHediff(psysight, null, null, null);
             }
+            // Set the level of psysight to the psylink level (even if it's 0) 
+            Hediff_Psysight def = (Hediff_Psysight)pawn.health.hediffSet.GetFirstHediffOfDef(PsysightHediffDefOf.Psysight);
+            def.SetLevelTo(pawn.GetPsylinkLevel());
+            
         }
 
         public static void Remover(Pawn pawn)
         {
-            if (!pawn.ShouldHavePsysightHediff() && pawn.health.hediffSet.HasHediff(PsysightHediffDefOf.Psysight))
-            {
-                Hediff_Psysight def = (Hediff_Psysight)pawn.health.hediffSet.GetFirstHediffOfDef(PsysightHediffDefOf.Psysight);
-                def.ageTicks = 0;
-                def.SetLevelTo(0);
-                def.Severity = 0f;
-            }
+            Hediff_Psysight def = (Hediff_Psysight)pawn.health.hediffSet.GetFirstHediffOfDef(PsysightHediffDefOf.Psysight);
+            def.ageTicks = 0;
+            def.SetLevelTo(0);
+            def.Severity = 0f;
         }
 
         public static void Updater(Pawn pawn)
@@ -144,8 +104,47 @@ namespace Blindsight_Enhanced
         }
     }
 
+    #endregion
+
+    #region Harmony Patches
+
+    [StaticConstructorOnStartup]
+    public static class HarmonyPatches
+    {
+        static HarmonyPatches()
+        {
+            new Harmony("Blindsight_Enhanced").PatchAll();
+            Log.Message("Blindsight Enhanced is Loaded and Patched, Thank you for using my mod!");
+        }
+
+        // Accessable on all pawns
+        public static bool ShouldHavePsysightHediff(this Pawn pawn)
+        {
+            bool hasSight = true;
+            int missingSources = 0;
+            // Check if pawn has sight 
+            List<Hediff> hediffs = pawn.health.hediffSet.hediffs;
+            for (int i = 0; i < hediffs.Count; i++)
+            {
+                // Check if eyes are missing OR if prothetic is nonfunctional
+                if (((hediffs[i] as Hediff_MissingPart) != null && hediffs[i].Part.def.tags.Contains(BodyPartTagDefOf.SightSource)) || ((hediffs[i] as Hediff_AddedPart) != null && hediffs[i].Part.def.tags.Contains(BodyPartTagDefOf.SightSource) && hediffs[i].def.addedPartProps.partEfficiency == 0))
+                {
+                    missingSources += 1;
+                }
+            }
+            // if both eyes are missing or non-functional, the pawn doesn't have sight
+            if (missingSources >= 2)
+            {
+                hasSight = false;
+            }
+
+            return !pawn.Dead && pawn.Ideo != null && pawn.Ideo.IdeoApprovesOfBlindness() && !hasSight;
+        }
+    }
+
+    // Run updater when pawns are first created
     [HarmonyPatch(typeof(Pawn), "SpawnSetup")]
-    public static class Pawn_SpawnSetup_Patch
+    public static class BE_SpawnSetup_Patch
     {
         public static void Postfix(Pawn __instance)
         {
@@ -155,9 +154,11 @@ namespace Blindsight_Enhanced
             }
         }
     }
+    
 
+    // Run updated when a pawns health changes (if they get new eyes)
     [HarmonyPatch(typeof(Pawn_HealthTracker), "CheckForStateChange")]
-    public static class Pawn_CheckForStateChange_Patch
+    public static class BE_CheckForStateChange_Patch
     {
         public static void Postfix(Pawn ___pawn)
         {
@@ -165,6 +166,7 @@ namespace Blindsight_Enhanced
         }
     }
 
+    // Update Psysight level when a new Psylink level is given
     [HarmonyPatch(typeof(Hediff_Psylink), "ChangeLevel", new Type[] { typeof(int) })]
     public static class BE_ChangeLevel_Patch
     {
@@ -173,7 +175,6 @@ namespace Blindsight_Enhanced
             PsysightHandler.Giver(__instance.pawn);
         }
     }
-
 
     [HarmonyPatch(typeof(PawnCapacityWorker_Sight), "CalculateCapacityLevel")]
     public static class BE_CalculateCapacityLevel_Patch
@@ -186,7 +187,7 @@ namespace Blindsight_Enhanced
             currentPawndiffSet = diffSet;
             if (diffSet.HasHediff(PsysightHediffDefOf.Psysight))
             {
-                __result = 0.01f; //must not be 0 otherwise the game will clamp Sight stat at 0, therefore all offsets of mod hediffs are 1 unit below what they should be in XML
+                __result = 0.25f; // Unclamps sight from 0% to a base of 25%
             }
 
         }
@@ -206,4 +207,20 @@ namespace Blindsight_Enhanced
             }
         }
     }
+
+
+    [HarmonyPatch(typeof(PawnUtility), "IsBiologicallyBlind")]
+    public static class BE_IsBiologicallyBlind_Patch
+    {
+        [HarmonyPostfix]
+        public static void Postfix(ref bool __result, Pawn pawn)
+        {
+            if (pawn.ShouldHavePsysightHediff())
+            {
+                __result = true;
+            }
+        }
+    }
+
+    #endregion
 }

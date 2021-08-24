@@ -2,11 +2,11 @@
 <ModMetaData>
   <name>Blindsight Enhanced</name>
   <author>Tobyto</author>
+  <description>Pawns that are blinded or have no capability of seeing now recieve Psysight! It is a buff that directly grants a pawn sight based on thier Psylink level. Starting at 25% sight all the way up to 150% sight.</description>
   <supportedVersions>
     <li>1.3</li>
   </supportedVersions>
-  <packageId></packageId>
-  <!--
+  <packageId>Tobyto.BlindsightEnhanced</packageId>
   <modDependencies>
     <li>
       <packageId>brrainz.harmony</packageId>
@@ -15,11 +15,10 @@
       <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
     </li>
   </modDependencies>
-  -->
   <loadAfter>
+    <li>brrainz.harmony</li>
     <li>Ludeon.RimWorld</li>
     <li>Ludeon.RimWorld.Royalty</li>
     <li>Ludeon.Rimworld.Ideology</li>
   </loadAfter>
-  <description></description>
 </ModMetaData>

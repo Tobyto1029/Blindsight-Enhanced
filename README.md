@@ -14,7 +14,7 @@ If there is any suggestions and bugs, please let me know!
 
 ## Features
 - Psysight: As pawns gain Psylink levels, they proportionally increase their sight, starting at
-25% sight with no Psylink or Level 1 Psylink all the way up to 150% at Level 6 Psylink
+25% sight with no Psylink all the way up to 150% at Level 6 Psylink
 - Even though the pawns can "see" they are still considered to be blind
 
 ## Planned

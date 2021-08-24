@@ -6,17 +6,27 @@
     <hediffClass>Blindsight_Enhanced.Hediff_Psysight</hediffClass>
     <label>Psysight</label>
     <description>Blinded by the ritual of blinding, this person is able to see using mental fortituide</description>
+    <defaultLabelColor>(0.6, 0.6, 1.0)</defaultLabelColor>
     <isBad>false</isBad>
     <initialSeverity>1</initialSeverity>
       <minSeverity>0</minSeverity>
       <maxSeverity>6</maxSeverity>
     <stages>
       <li>
+         <minSeverity>0</minSeverity>
+         <capMods>
+            <li>
+               <capacity>Sight</capacity>
+               <offset>-0.05</offset>
+            </li>
+         </capMods>
+      </li>
+      <li>
          <minSeverity>1</minSeverity>
          <capMods>
             <li>
                <capacity>Sight</capacity>
-               <offset>0.24</offset>
+               <offset>0</offset>
             </li>
          </capMods>
       </li>
@@ -25,7 +35,7 @@
          <capMods>
             <li>
                <capacity>Sight</capacity>
-               <offset>0.44</offset>
+               <offset>0.25</offset>
             </li>
          </capMods>
       </li>
@@ -34,7 +44,7 @@
          <capMods>
             <li>
                <capacity>Sight</capacity>
-               <offset>0.74</offset>
+               <offset>0.50</offset>
             </li>
          </capMods>
       </li>
@@ -43,7 +53,7 @@
          <capMods>
             <li>
                <capacity>Sight</capacity>
-               <offset>0.99</offset>
+               <offset>0.75</offset>
             </li>
          </capMods>
       </li>
@@ -52,7 +62,7 @@
          <capMods>
             <li>
                <capacity>Sight</capacity>
-               <offset>1.24</offset>
+               <offset>1.00</offset>
             </li>
          </capMods>
       </li>
@@ -61,7 +71,7 @@
          <capMods>
             <li>
                <capacity>Sight</capacity>
-               <offset>1.49</offset>
+               <offset>1.25</offset>
             </li>
          </capMods>
       </li>
