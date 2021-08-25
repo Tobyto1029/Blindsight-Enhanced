@@ -115,7 +115,7 @@ namespace Blindsight_Enhanced
         static HarmonyPatches()
         {
             new Harmony("Blindsight_Enhanced").PatchAll();
-            Log.Message("Blindsight Enhanced is Loaded and Patched, Thank you for using my mod!");
+            Log.Message("[Blindsight Enhanced] Loaded and Patched, Thank you for using my mod!");
         }
 
         // Accessable on all pawns
@@ -128,10 +128,11 @@ namespace Blindsight_Enhanced
             for (int i = 0; i < hediffs.Count; i++)
             {
                 // Check if eyes are missing OR if prothetic is nonfunctional
-                if (((hediffs[i] as Hediff_MissingPart) != null && hediffs[i].Part.def.tags.Contains(BodyPartTagDefOf.SightSource)) || ((hediffs[i] as Hediff_AddedPart) != null && hediffs[i].Part.def.tags.Contains(BodyPartTagDefOf.SightSource) && hediffs[i].def.addedPartProps.partEfficiency == 0))
+                if ((hediffs[i] is Hediff_MissingPart && hediffs[i].Part.def.tags.Contains(BodyPartTagDefOf.SightSource)) || (hediffs[i] is Hediff_AddedPart && hediffs[i].Part.def.tags.Contains(BodyPartTagDefOf.SightSource) && hediffs[i].def.addedPartProps.partEfficiency == 0))
                 {
                     missingSources += 1;
                 }
+                if (missingSources == 2) break;
             }
             // if both eyes are missing or non-functional, the pawn doesn't have sight
             if (missingSources >= 2)
@@ -149,10 +150,7 @@ namespace Blindsight_Enhanced
     {
         public static void Postfix(Pawn __instance)
         {
-            if (__instance.ShouldHavePsysightHediff())
-            {
-                PsysightHandler.Updater(__instance);
-            }
+            PsysightHandler.Updater(__instance);
         }
     }
     
@@ -216,7 +214,7 @@ namespace Blindsight_Enhanced
         [HarmonyPostfix]
         public static void Postfix(ref bool __result, Pawn pawn)
         {
-            if (pawn.ShouldHavePsysightHediff())
+            if (pawn.health.hediffSet.HasHediff(PsysightHediffDefOf.Psysight))
             {
                 __result = true;
             }
@@ -229,6 +227,7 @@ namespace Blindsight_Enhanced
     {
         public static void Postfix(ref bool __result, ref bool ___humanlikeOnly, Thing t)
         {
+            /*
             if (___humanlikeOnly)
             {
                 Pawn pawn = t as Pawn;
@@ -238,8 +237,9 @@ namespace Blindsight_Enhanced
                     return;
                 }
             }
+            */
             Pawn pawn2;
-            if ((pawn2 = (t as Pawn)) != null && pawn2.ShouldHavePsysightHediff())
+            if ((pawn2 = (t as Pawn)) != null && pawn2.health.hediffSet.HasHediff(PsysightHediffDefOf.Psysight))
             {
                 __result = false;
                 return;
