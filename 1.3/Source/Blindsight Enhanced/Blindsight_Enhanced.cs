@@ -3,6 +3,7 @@ using RimWorld;
 using Verse;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -222,5 +223,29 @@ namespace Blindsight_Enhanced
         }
     }
 
+
+    // I could probably do something with a transpiler but it's above my skills
+    [HarmonyPatch(typeof(StatPart_Glow), "ActiveFor")]
+    public static class BE_ActiveFor_Patch
+    {
+        public static void Postfix(ref bool __result, ref bool ___humanlikeOnly, Thing t)
+        {
+            if (___humanlikeOnly)
+            {
+                Pawn pawn = t as Pawn;
+                if (pawn != null && !pawn.RaceProps.Humanlike)
+                {
+                    __result = false;
+                    return;
+                }
+            }
+            Pawn pawn2;
+            if ((pawn2 = (t as Pawn)) != null && pawn2.ShouldHavePsysightHediff())
+            {
+                __result = false;
+                return;
+            }
+        }
+    }
     #endregion
 }
