@@ -223,7 +223,6 @@ namespace Blindsight_Enhanced
         }
     }
 
-
     // I could probably do something with a transpiler but it's above my skills
     [HarmonyPatch(typeof(StatPart_Glow), "ActiveFor")]
     public static class BE_ActiveFor_Patch
