@@ -29,7 +29,6 @@ namespace Blindsight_Enhanced
         public override void PostAdd(DamageInfo? dinfo)
         {
             base.PostAdd(dinfo);
-            Log.Message("Psysight was successfully added");
         }
 
         public override void Tick()
@@ -122,7 +121,6 @@ namespace Blindsight_Enhanced
     {
         public static void Postfix(Pawn __instance)
         {
-            Log.Message("Psysight SpawnSetup");
 
             PsysightHandler.Updater(__instance);
         }
@@ -135,7 +133,6 @@ namespace Blindsight_Enhanced
     {
         public static void Postfix(Pawn ___pawn)
         {
-            Log.Message("Psysight CheckForStateChange");
             PsysightHandler.Updater(___pawn);
         }
     }
