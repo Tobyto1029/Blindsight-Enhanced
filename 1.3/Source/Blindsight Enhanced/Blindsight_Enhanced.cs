@@ -80,6 +80,15 @@ namespace Blindsight_Enhanced
             }
         }
 
+        public static void SetToPsylink(Pawn pawn)
+        {
+            Hediff_Psysight def = (Hediff_Psysight)pawn.health.hediffSet.GetFirstHediffOfDef(PsysightHediffDefOf.Psysight);
+            if (def != null)
+            {
+                def.SetLevelTo(pawn.GetPsylinkLevel());
+            }
+        }
+
         public static bool ShouldHavePsysightHediff(Pawn pawn)
         {
             if (pawn.health.hediffSet.HasHediff(PsysightHediffDefOf.Psysight))
@@ -143,7 +152,7 @@ namespace Blindsight_Enhanced
     {
         public static void Postfix(Hediff_Psylink __instance)
         {
-            PsysightHandler.Giver(__instance.pawn);
+            PsysightHandler.SetToPsylink(__instance.pawn);
         }
     }
 
