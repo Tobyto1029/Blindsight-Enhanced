@@ -1,10 +1,6 @@
 ﻿using Verse;
 using UnityEngine;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Blindsight_Enhanced
 {
@@ -80,6 +76,7 @@ namespace Blindsight_Enhanced
         }
 
         public static float Max = 3f;
+        public static bool isChanged = false;
 
         public static void ResetSettings()
         {
@@ -116,6 +113,12 @@ namespace Blindsight_Enhanced
             if (f >= BE_Settings.Max) return BE_Settings.Max;
             if (f <= BE_Settings.BaseSight) return BE_Settings.BaseSight;
             return f;
+        }
+
+        private float BaseSight
+        {
+            get { return BE_Settings.BaseSight; }
+            set { if (value > 0) BE_Settings.BaseSight = value; }
         }
 
         private float TotalLvl0
@@ -155,13 +158,12 @@ namespace Blindsight_Enhanced
         }
 
 
-
         public override void DoSettingsWindowContents(Rect inRect)
         {
             Listing_Standard l = new Listing_Standard();
             l.Begin(inRect);
             l.Gap(8f);
-            BE_Settings.BaseSight = (float)l.LabeledSlider("BaseSight".Translate() + ": " + (BE_Settings.BaseSight * 100).ToString() + "% Sight", BE_Settings.BaseSight, 0.01f, BE_Settings.Max);
+            BaseSight = (float)l.LabeledSlider("BaseSight".Translate() + ": " + (BE_Settings.BaseSight * 100).ToString() + "% Sight", BaseSight, 0.01f, BE_Settings.Max);
             l.Gap(24f);
 
             Text.Font = GameFont.Medium;
@@ -178,10 +180,13 @@ namespace Blindsight_Enhanced
             l.Gap(24f);
 
             ResetButton(l.ButtonText("ResetSettings".Translate()));
+            l.Gap(8f);
+
+            TaggedString str = new TaggedString("SettingsApplyOnRestart".Translate()).Colorize(new Color(0.8f, 0.4f, 0.4f, 1f));
+            l.Label(str);
 
             base.DoSettingsWindowContents(inRect);
             l.End();
-            
         }
 
         public override string SettingsCategory()

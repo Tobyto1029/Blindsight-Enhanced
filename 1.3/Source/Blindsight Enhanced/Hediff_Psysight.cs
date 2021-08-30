@@ -1,12 +1,5 @@
-﻿using HarmonyLib;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
-using System;
-using System.Reflection.Emit;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace Blindsight_Enhanced
 {

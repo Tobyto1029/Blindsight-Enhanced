@@ -72,7 +72,7 @@ namespace Blindsight_Enhanced
             currentPawndiffSet = diffSet;
             if (diffSet.HasHediff(PsysightHediffDefOf.Psysight))
             {
-                __result = BE_Settings.BaseSight; // Unclamps sight from 0% to a base of 20%
+                __result = BE_Settings.BaseSight;
             }
         }
     }
