@@ -14,6 +14,20 @@ namespace Blindsight_Enhanced
         {
             new Harmony("Blindsight_Enhanced").PatchAll();
             Log.Message("[Blindsight Enhanced] Patched");
+            ApplySettings();
+        }
+
+        private static void ApplySettings()
+        {
+            HediffDef Psysight = DefDatabase<HediffDef>.GetNamed("Psysight");
+            Psysight.stages[0].capMods[0].offset = BE_Settings.Lvl0;
+            Psysight.stages[1].capMods[0].offset = BE_Settings.Lvl1;
+            Psysight.stages[2].capMods[0].offset = BE_Settings.Lvl2;
+            Psysight.stages[3].capMods[0].offset = BE_Settings.Lvl3;
+            Psysight.stages[4].capMods[0].offset = BE_Settings.Lvl4;
+            Psysight.stages[5].capMods[0].offset = BE_Settings.Lvl5;
+            Psysight.stages[6].capMods[0].offset = BE_Settings.Lvl5;
+            Log.Message("[Blindsight Enhanced] Settings Loaded");
         }
     }
     // Run updater when pawns are first created
@@ -58,7 +72,7 @@ namespace Blindsight_Enhanced
             currentPawndiffSet = diffSet;
             if (diffSet.HasHediff(PsysightHediffDefOf.Psysight))
             {
-                __result = 0.2f; // Unclamps sight from 0% to a base of 20%
+                __result = BE_Settings.BaseSight; // Unclamps sight from 0% to a base of 20%
             }
         }
     }

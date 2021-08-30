@@ -114,6 +114,7 @@ namespace Blindsight_Enhanced
         private static float BE_Max(float f)
         {
             if (f >= BE_Settings.Max) return BE_Settings.Max;
+            if (f <= BE_Settings.BaseSight) return BE_Settings.BaseSight;
             return f;
         }
 

@@ -21,6 +21,7 @@ namespace Blindsight_Enhanced
         }
     }
 
+
     public class Hediff_Psysight : Hediff_Level
     {
         public static HediffDef Psysight;
@@ -50,7 +51,6 @@ namespace Blindsight_Enhanced
         public override void ExposeData()
         {
             base.ExposeData();
-
         }
     }
 }
