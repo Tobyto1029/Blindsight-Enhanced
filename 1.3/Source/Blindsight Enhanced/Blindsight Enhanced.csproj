@@ -67,6 +67,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BE_Mod.cs" />
+    <Compile Include="ExtentionMethods.cs" />
     <Compile Include="Hediff_Psysight.cs" />
     <Compile Include="HarmonyPatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
