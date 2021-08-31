@@ -7,4 +7,7 @@
 	<BlindsightEnhanced>Blindsight Enhanced</BlindsightEnhanced>
 	<ResetSettings>Reset Settings</ResetSettings>
 	<SettingsApplyOnRestart>Settings are Applied on Restart</SettingsApplyOnRestart>
+	<ResetSettingsMsg>Are you sure you want to reset settings?</ResetSettingsMsg>
+	<IsCapped>Default Max Value (Only Uncheck if you have a mod that changes the Sight Max)</IsCapped>
+	<Max>Max</Max>
 </LanguageData>
