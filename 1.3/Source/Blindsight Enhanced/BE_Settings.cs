@@ -107,7 +107,7 @@ namespace Blindsight_Enhanced
             Lvl6 = 1.3f;
             isCapped = true;
             Max = 3f;
-            Log.Message("[Blindsight Enhanced] Settings Reset");
+            Log.Message("[Blindsight Enhanced] Settings Reset, restart game to apply");
         }
     }
 }
