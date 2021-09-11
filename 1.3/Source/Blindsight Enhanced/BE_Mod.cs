@@ -19,7 +19,6 @@ namespace Blindsight_Enhanced
                 string text = "ResetSettingsMsg".Translate();
                 string title = "";
                 Find.WindowStack.Add(new Dialog_MessageBox(text, "Confirm".Translate(), new Action(BE_Settings.ResetSettings), "GoBack".Translate(), null, title, true, new Action(BE_Settings.ResetSettings), null, WindowLayer.Dialog));
-                BE_Settings.ResetSettings();
             }
         }
 

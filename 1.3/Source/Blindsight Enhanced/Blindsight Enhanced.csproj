@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BE_Comps.cs" />
     <Compile Include="BE_Mod.cs" />
     <Compile Include="BE_Settings.cs" />
     <Compile Include="ExtentionMethods.cs" />
