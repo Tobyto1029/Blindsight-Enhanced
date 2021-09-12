@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
     <Operation Class="PatchOperationConditional">
-        <xpath>/Defs/HediffDef[defName="Blindfold"]/comps</xpath>
+        <xpath>/Defs/ThingDef[defName="Apparel_Blindfold"]/comps</xpath>
         <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/HediffDef[defName="Blindfold"]</xpath>
+            <xpath>/Defs/HediffDef[defName="Apparel_Blindfold"]</xpath>
             <value>
                 <comps>
-                    <li Class="Blindsight_Enhanced.HediffCompProperties_BlindfoldPsysightComps"></li>
+                    <li Class="Blindsight_Enhanced.CompProperties_BlindfoldPsysightComps">
+                        <hediff>Blindfold</hediff>
+                        <part>Head</part>
+                    </li>
                 </comps>
             </value>
         </nomatch>
         <match Class="PatchOperationAdd">
-            <xpath>/Defs/HediffDef[defName="Blindfold"]/comps</xpath>
+            <xpath>/Defs/ThingDef[defName="Apparel_Blindfold"]/comps</xpath>
             <value>
-                <li Class="Blindsight_Enhanced.HediffCompProperties_BlindfoldPsysightComps"></li>
+                <li Class="Blindsight_Enhanced.CompProperties_BlindfoldPsysightComps">
+                    <hediff>Blindfold</hediff>
+                    <part>Head</part>
+                </li>
             </value>
         </match>
     </Operation>

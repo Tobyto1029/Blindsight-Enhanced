@@ -1,33 +1,38 @@
 ﻿using Verse;
+using RimWorld;
 
 namespace Blindsight_Enhanced
 {
     // Fixes Blindfold Hediff
-    public class HediffComp_BlindfoldPsysightComps : HediffComp
+    public class Comp_BlindfoldPsysightComps : ThingComp
     {
-        public HediffCompProperties_BlindfoldPsysightComps Props
+        private CompProperties_BlindfoldPsysightComps Props
         {
             get
             {
-                return (HediffCompProperties_BlindfoldPsysightComps)this.props;
+                return (CompProperties_BlindfoldPsysightComps)this.props;
             }
         }
 
-        public override bool CompShouldRemove
+        public override void Notify_Equipped(Pawn pawn)
         {
-            get
+            if (pawn != null && pawn.health.hediffSet.HasHediff(PsysightHediffDefOf.Psysight))
             {
-                // Log.Message("BlindfoldPsysightComps CompShouldRemove");
-                return this.parent.pawn.health.hediffSet.HasHediff(PsysightHediffDefOf.Psysight);
+                if (pawn.health.hediffSet.HasHediff(Props.hediff)) pawn.health.RemoveHediff(pawn.health.hediffSet.GetFirstHediffOfDef(Props.hediff));
             }
         }
+
+
     }
 
-    public class HediffCompProperties_BlindfoldPsysightComps : HediffCompProperties
+    public class CompProperties_BlindfoldPsysightComps : CompProperties
     {
-        public HediffCompProperties_BlindfoldPsysightComps()
+        public CompProperties_BlindfoldPsysightComps()
         {
-            this.compClass = typeof(HediffComp_BlindfoldPsysightComps);
+            this.compClass = typeof(Comp_BlindfoldPsysightComps);
         }
+
+        public HediffDef hediff;
+        public BodyPartDef part;
     }
 }

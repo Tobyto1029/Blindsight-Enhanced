@@ -16,8 +16,12 @@ namespace Blindsight_Enhanced
                 pawn.health.AddHediff(PsysightHediffDefOf.Psysight, pawn.health.hediffSet.GetBrain());
                 Hediff_Psysight def = (Hediff_Psysight)pawn.health.hediffSet.GetFirstHediffOfDef(PsysightHediffDefOf.Psysight);
                 def.SetLevelTo(pawn.GetPsylinkLevel());
+
+                // If pawn has Blindfold hediff, remove it
+                HediffDef def2 = DefDatabase<HediffDef>.GetNamed("Blindfold");
+                if (pawn.health.hediffSet.HasHediff(def2)) pawn.health.RemoveHediff(pawn.health.hediffSet.GetFirstHediffOfDef(def2));
             }
-            
+
         }
 
         public static void Remover(Pawn pawn)
@@ -26,6 +30,29 @@ namespace Blindsight_Enhanced
             Hediff_Psysight def = (Hediff_Psysight)pawn.health.hediffSet.GetFirstHediffOfDef(PsysightHediffDefOf.Psysight);
             def.ageTicks = 0;
             def._shouldRemove = true;
+
+
+            // Check if pawn is wearing a blindfold
+            using (List<Apparel>.Enumerator enumerator = pawn.apparel.WornApparel.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    if (enumerator.Current.def == ThingDefOf.Apparel_Blindfold)
+                    {
+                        HediffDef def2 = DefDatabase<HediffDef>.GetNamed("Blindfold");
+                        if (pawn.health.hediffSet.GetFirstHediffOfDef(def2, false) == null)
+                        {
+                            // Add hediff with comps setup correctly
+                            HediffComp_RemoveIfApparelDropped hediffComp_RemoveIfApparelDropped = pawn.health.AddHediff(def2, pawn.health.hediffSet.GetNotMissingParts(BodyPartHeight.Undefined, BodyPartDepth.Undefined, null, null).FirstOrFallback((BodyPartRecord p) => p.def == BodyPartDefOf.Head, null), null, null).TryGetComp<HediffComp_RemoveIfApparelDropped>();
+                            if (hediffComp_RemoveIfApparelDropped != null)
+                            {
+                                hediffComp_RemoveIfApparelDropped.wornApparel = enumerator.Current;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
         }
 
         public static void Updater(Pawn pawn)
