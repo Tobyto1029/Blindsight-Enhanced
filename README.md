@@ -15,7 +15,9 @@ If there is any suggestions and bugs, please let me know!
 ## Features
 - Psysight: As pawns gain Psylink levels, they proportionally increase their sight, starting at
 25% sight with no Psylink all the way up to 150% at Level 6 Psylink
+- Psysight is completly adjustable in settings
 - Even though the pawns can "see" they are still considered to be blind for Precept needs
 - Pawns will not care about darkness
 - Light does not affect Global Workspeed while a pawn has Psysight
-- ***|| NEEDS TESTING ||*** Pawns that have artifical eyes that do not improve sight itself should still allow a pawn to gain Psysight
+- Pawns that have artifical eyes that do not improve sight itself should still allow a pawn to gain Psysight
+- Blindfolds can be used with Psysight as cosmetics
