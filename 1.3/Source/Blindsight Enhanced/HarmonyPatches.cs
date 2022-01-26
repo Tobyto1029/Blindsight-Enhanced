@@ -26,7 +26,7 @@ namespace Blindsight_Enhanced
             Psysight.stages[3].capMods[0].offset = BE_Settings.Lvl3;
             Psysight.stages[4].capMods[0].offset = BE_Settings.Lvl4;
             Psysight.stages[5].capMods[0].offset = BE_Settings.Lvl5;
-            Psysight.stages[6].capMods[0].offset = BE_Settings.Lvl5;
+            Psysight.stages[6].capMods[0].offset = BE_Settings.Lvl6;
             Log.Message("[Blindsight Enhanced] Settings Loaded");
         }
     }
